@@ -53,6 +53,7 @@
     <Report Include="1-ApartmentAvailability.rdl" />
     <Report Include="2-ResidentInformation.rdl" />
     <Report Include="3-MaintenanceRequests.rdl" />
+    <Report Include="4-RemodellingReport.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
 </Project>
