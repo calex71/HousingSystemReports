@@ -3,51 +3,90 @@
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="AvailableApartments">
+    <DataSource Name="Resident">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString>Data Source=192.168.1.200;Initial Catalog=HousingSystemDB</ConnectString>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
-      <rd:DataSourceID>8c00563a-80cb-4d8a-81e8-255cd0b504d9</rd:DataSourceID>
+      <rd:DataSourceID>cdf3f5ef-d0c2-4c0d-b907-184e5b32b314</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSet1">
       <Query>
-        <DataSourceName>AvailableApartments</DataSourceName>
+        <DataSourceName>Resident</DataSourceName>
         <CommandText>SELECT
-  Apartment.ApartmentID
-  ,Apartment.ApartmentNo AS 'Apartment Number'
-  ,Apartment.BuildingNo AS 'Building Number'
-  ,Village.VillageName AS Village
-  ,Apartment.CategoryID AS Catagory
+  Village.VillageName
+  ,Resident.ResidentID
+  ,Resident.ResForename
+  ,Resident.ResSurname
+  ,Resident.ResGender
+  ,Resident.MaritalStatus
+  ,Resident.ResStreet
+  ,Resident.ResTown
+  ,Resident.ResCounty
+  ,Resident.ResPhone
+  ,Resident.MoveInDate
+  ,Resident.ApartmentID AS [Resident ApartmentID]
+  ,Resident.CollegeDeptID
+  ,Apartment.ApartmentID AS [Apartment ApartmentID]
+  ,Apartment.ApartmentNo
+  ,Apartment.BuildingNo
+  ,Apartment.OccupancyStatus
+  ,Apartment.RentPM
+  ,Apartment.UtilityPM
+  ,Apartment.CategoryID AS [Apartment CategoryID]
+  ,Village.VillageID AS [Village VillageID]
+  ,Category.CategoryID AS [Category CategoryID]
+  ,Category.VillageID AS [Category VillageID]
 FROM
-  Category
-  INNER JOIN Apartment
-    ON Category.CategoryID = Apartment.CategoryID
+  Apartment
+  INNER JOIN Resident
+    ON Apartment.ApartmentID = Resident.ApartmentID
+  INNER JOIN Category
+    ON Apartment.CategoryID = Category.CategoryID
   INNER JOIN Village
-    ON Category.VillageID = Village.VillageID
-WHERE
-  Apartment.OccupancyStatus = 'U'
-ORDER BY Apartment.CategoryID</CommandText>
+    ON Category.VillageID = Village.VillageID</CommandText>
         <rd:DesignerState>
           <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
             <SelectedColumns>
+              <ColumnExpression ColumnOwner="Village" ColumnName="VillageName" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResidentID" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResForename" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResSurname" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResGender" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="MaritalStatus" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResStreet" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResTown" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResCounty" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ResPhone" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="MoveInDate" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="ApartmentID" />
+              <ColumnExpression ColumnOwner="Resident" ColumnName="CollegeDeptID" />
               <ColumnExpression ColumnOwner="Apartment" ColumnName="ApartmentID" />
               <ColumnExpression ColumnOwner="Apartment" ColumnName="ApartmentNo" />
               <ColumnExpression ColumnOwner="Apartment" ColumnName="BuildingNo" />
               <ColumnExpression ColumnOwner="Apartment" ColumnName="OccupancyStatus" />
+              <ColumnExpression ColumnOwner="Apartment" ColumnName="RentPM" />
+              <ColumnExpression ColumnOwner="Apartment" ColumnName="UtilityPM" />
               <ColumnExpression ColumnOwner="Apartment" ColumnName="CategoryID" />
+              <ColumnExpression ColumnOwner="Village" ColumnName="VillageID" />
+              <ColumnExpression ColumnOwner="Category" ColumnName="CategoryID" />
               <ColumnExpression ColumnOwner="Category" ColumnName="VillageID" />
-              <ColumnExpression ColumnOwner="Village" ColumnName="VillageName" />
             </SelectedColumns>
             <Joins>
-              <Join Type="CROSS JOIN" ColumnOwner="Category" />
-              <Join Type="INNER JOIN" ColumnOwner="Apartment">
+              <Join Type="CROSS JOIN" ColumnOwner="Apartment" />
+              <Join Type="INNER JOIN" ColumnOwner="Resident">
                 <On>
-                  <From ColumnOwner="Category" ColumnName="CategoryID" />
-                  <To ColumnOwner="Apartment" ColumnName="CategoryID" />
+                  <From ColumnOwner="Apartment" ColumnName="ApartmentID" />
+                  <To ColumnOwner="Resident" ColumnName="ApartmentID" />
+                </On>
+              </Join>
+              <Join Type="INNER JOIN" ColumnOwner="Category">
+                <On>
+                  <From ColumnOwner="Apartment" ColumnName="CategoryID" />
+                  <To ColumnOwner="Category" ColumnName="CategoryID" />
                 </On>
               </Join>
               <Join Type="INNER JOIN" ColumnOwner="Village">
@@ -61,25 +100,103 @@ ORDER BY Apartment.CategoryID</CommandText>
         </rd:DesignerState>
       </Query>
       <Fields>
-        <Field Name="ApartmentID">
-          <DataField>ApartmentID</DataField>
+        <Field Name="VillageName">
+          <DataField>VillageName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ResidentID">
+          <DataField>ResidentID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="Apartment_Number">
-          <DataField>Apartment Number</DataField>
+        <Field Name="ResForename">
+          <DataField>ResForename</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Building_Number">
-          <DataField>Building Number</DataField>
+        <Field Name="ResSurname">
+          <DataField>ResSurname</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Village">
-          <DataField>Village</DataField>
+        <Field Name="ResGender">
+          <DataField>ResGender</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Catagory">
-          <DataField>Catagory</DataField>
+        <Field Name="MaritalStatus">
+          <DataField>MaritalStatus</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ResStreet">
+          <DataField>ResStreet</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ResTown">
+          <DataField>ResTown</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ResCounty">
+          <DataField>ResCounty</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ResPhone">
+          <DataField>ResPhone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="MoveInDate">
+          <DataField>MoveInDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Resident_ApartmentID">
+          <DataField>Resident ApartmentID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CollegeDeptID">
+          <DataField>CollegeDeptID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Apartment_ApartmentID">
+          <DataField>Apartment ApartmentID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ApartmentNo">
+          <DataField>ApartmentNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="BuildingNo">
+          <DataField>BuildingNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="OccupancyStatus">
+          <DataField>OccupancyStatus</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RentPM">
+          <DataField>RentPM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="UtilityPM">
+          <DataField>UtilityPM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Apartment_CategoryID">
+          <DataField>Apartment CategoryID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Village_VillageID">
+          <DataField>Village VillageID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Category_CategoryID">
+          <DataField>Category CategoryID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Category_VillageID">
+          <DataField>Category VillageID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ResidencyTotal">
+          <Value>=DateDiff("m",Fields!MoveInDate.Value,Today)</Value>
+        </Field>
+        <Field Name="TotalPaid">
+          <Value>=((CInt(Fields!RentPM.Value)+CInt(Fields!UtilityPM.Value))*Fields!ResidencyTotal.Value)</Value>
         </Field>
       </Fields>
     </DataSet>
@@ -95,7 +212,7 @@ ORDER BY Apartment.CategoryID</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Available Apartments</Value>
+                    <Value>Resident Information</Value>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>24pt</FontSize>
@@ -109,13 +226,10 @@ ORDER BY Apartment.CategoryID</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox1</rd:DefaultName>
-            <Top>2.20486cm</Top>
+            <Top>2.16959cm</Top>
             <Height>0.43in</Height>
-            <Width>5.13889in</Width>
+            <Width>11in</Width>
             <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
               <BackgroundColor>CornflowerBlue</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -127,39 +241,25 @@ ORDER BY Apartment.CategoryID</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.90972in</Width>
+                  <Width>22in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>2.78417in</Height>
+                  <Height>2.82in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
                         <Rectangle Name="List1_Contents">
                           <ReportItems>
-                            <Textbox Name="Catagory">
+                            <Textbox Name="Village_VillageID">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Apartments Available In Category </Value>
-                                      <Style>
-                                        <FontFamily />
-                                        <FontSize>14pt</FontSize>
-                                      </Style>
-                                    </TextRun>
-                                    <TextRun>
-                                      <Value>=Fields!Catagory.Value</Value>
-                                      <Style>
-                                        <FontFamily />
-                                        <FontSize>14pt</FontSize>
-                                      </Style>
-                                    </TextRun>
-                                    <TextRun>
-                                      <Value xml:space="preserve"> </Value>
+                                      <Value>Resident information per village</Value>
                                       <Style>
                                         <FontFamily />
                                         <FontSize>14pt</FontSize>
@@ -171,9 +271,10 @@ ORDER BY Apartment.CategoryID</CommandText>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>Catagory</rd:DefaultName>
+                              <rd:DefaultName>Village_VillageID</rd:DefaultName>
+                              <Top>0.03528cm</Top>
                               <Height>0.27in</Height>
-                              <Width>5.13889in</Width>
+                              <Width>11in</Width>
                               <Style>
                                 <FontFamily />
                                 <PaddingLeft>2pt</PaddingLeft>
@@ -186,13 +287,34 @@ ORDER BY Apartment.CategoryID</CommandText>
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>1.32639in</Width>
+                                    <Width>1in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.4375in</Width>
+                                    <Width>1in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.375in</Width>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>1in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>1in</Width>
@@ -211,7 +333,7 @@ ORDER BY Apartment.CategoryID</CommandText>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Apartment ID</Value>
+                                                    <Value>Resident ID</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <FontSize>11pt</FontSize>
@@ -245,46 +367,6 @@ ORDER BY Apartment.CategoryID</CommandText>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="textbox3">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>Apartment Number</Value>
-                                                    <Style>
-                                                      <FontFamily />
-                                                      <FontSize>11pt</FontSize>
-                                                      <FontWeight>Bold</FontWeight>
-                                                      <Color>#666666</Color>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style>
-                                                  <TextAlign>Center</TextAlign>
-                                                </Style>
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>textbox3</rd:DefaultName>
-                                            <Style>
-                                              <Border>
-                                                <Color>LightGrey</Color>
-                                              </Border>
-                                              <BottomBorder>
-                                                <Style>Solid</Style>
-                                              </BottomBorder>
-                                              <FontFamily />
-                                              <PaddingLeft>2pt</PaddingLeft>
-                                              <PaddingRight>2pt</PaddingRight>
-                                              <PaddingTop>2pt</PaddingTop>
-                                              <PaddingBottom>2pt</PaddingBottom>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell>
-                                        <CellContents>
                                           <Textbox Name="textbox4">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -292,7 +374,7 @@ ORDER BY Apartment.CategoryID</CommandText>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Building Number</Value>
+                                                    <Value> Forename</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <FontSize>11pt</FontSize>
@@ -325,14 +407,14 @@ ORDER BY Apartment.CategoryID</CommandText>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="textbox5">
+                                          <Textbox Name="textbox6">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Village</Value>
+                                                    <Value> Surname</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <FontSize>11pt</FontSize>
@@ -346,7 +428,7 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>textbox5</rd:DefaultName>
+                                            <rd:DefaultName>textbox6</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>LightGrey</Color>
@@ -355,6 +437,324 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                 <Style>Solid</Style>
                                               </BottomBorder>
                                               <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox8">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Apartment No</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox8</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox10">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Building No</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox10</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox12">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Village Name</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox12</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox14">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Move In Date</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox14</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox16">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Rent PM</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox16</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="textbox18">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Utility PM</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>textbox18</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox35">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Residency(Months)</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox35</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox3">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Total Paid</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <FontSize>11pt</FontSize>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>#666666</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox3</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
                                               <PaddingLeft>2pt</PaddingLeft>
                                               <PaddingRight>2pt</PaddingRight>
                                               <PaddingTop>2pt</PaddingTop>
@@ -370,14 +770,14 @@ ORDER BY Apartment.CategoryID</CommandText>
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="ApartmentID">
+                                          <Textbox Name="ResidentID">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ApartmentID.Value</Value>
+                                                    <Value>=Fields!ResidentID.Value</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <Color>#333333</Color>
@@ -385,11 +785,12 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                   </TextRun>
                                                 </TextRuns>
                                                 <Style>
+                                                  <FontFamily />
                                                   <TextAlign>Center</TextAlign>
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>ApartmentID</rd:DefaultName>
+                                            <rd:DefaultName>ResidentID</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>LightGrey</Color>
@@ -408,14 +809,14 @@ ORDER BY Apartment.CategoryID</CommandText>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="Apartment_Number">
+                                          <Textbox Name="ResForename2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!Apartment_Number.Value</Value>
+                                                    <Value>=Fields!ResForename.Value</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <Color>#333333</Color>
@@ -423,11 +824,12 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                   </TextRun>
                                                 </TextRuns>
                                                 <Style>
+                                                  <FontFamily />
                                                   <TextAlign>Center</TextAlign>
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Apartment_Number</rd:DefaultName>
+                                            <rd:DefaultName>ResForename</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>LightGrey</Color>
@@ -446,14 +848,14 @@ ORDER BY Apartment.CategoryID</CommandText>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="Building_Number">
+                                          <Textbox Name="ResSurname2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!Building_Number.Value</Value>
+                                                    <Value>=Fields!ResSurname.Value</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <Color>#333333</Color>
@@ -461,11 +863,12 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                   </TextRun>
                                                 </TextRuns>
                                                 <Style>
+                                                  <FontFamily />
                                                   <TextAlign>Center</TextAlign>
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Building_Number</rd:DefaultName>
+                                            <rd:DefaultName>ResSurname</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>LightGrey</Color>
@@ -484,14 +887,14 @@ ORDER BY Apartment.CategoryID</CommandText>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="Village">
+                                          <Textbox Name="ApartmentNo2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!Village.Value</Value>
+                                                    <Value>=Fields!ApartmentNo.Value</Value>
                                                     <Style>
                                                       <FontFamily />
                                                       <Color>#333333</Color>
@@ -499,11 +902,12 @@ ORDER BY Apartment.CategoryID</CommandText>
                                                   </TextRun>
                                                 </TextRuns>
                                                 <Style>
+                                                  <FontFamily />
                                                   <TextAlign>Center</TextAlign>
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Village</rd:DefaultName>
+                                            <rd:DefaultName>ApartmentNo</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>LightGrey</Color>
@@ -516,6 +920,281 @@ ORDER BY Apartment.CategoryID</CommandText>
                                               <PaddingRight>2pt</PaddingRight>
                                               <PaddingTop>2pt</PaddingTop>
                                               <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="BuildingNo2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!BuildingNo.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <FontFamily />
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>BuildingNo</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="VillageName2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!VillageName.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <FontFamily />
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>VillageName</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="MoveInDate2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!MoveInDate.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Format>d</Format>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <FontFamily />
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>MoveInDate</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="RentPM2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!RentPM.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Format>#,0.00;(#,0.00)</Format>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <FontFamily />
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>RentPM</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="UtilityPM2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!UtilityPM.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Format>#,0.00;(#,0.00)</Format>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <FontFamily />
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>UtilityPM</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <FontFamily />
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox36">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!ResidencyTotal.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Format>0.00;(0.00)</Format>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox36</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
+                                          <Textbox Name="Textbox5">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!TotalPaid.Value</Value>
+                                                    <Style>
+                                                      <FontFamily />
+                                                      <Format>'€'0;('€'0)</Format>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox5</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                              </Border>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                              <rd:FormatSymbolCulture>en-IE</rd:FormatSymbolCulture>
                                             </Style>
                                           </Textbox>
                                         </CellContents>
@@ -530,6 +1209,13 @@ ORDER BY Apartment.CategoryID</CommandText>
                                   <TablixMember />
                                   <TablixMember />
                                   <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
+                                  <TablixMember />
                                 </TablixMembers>
                               </TablixColumnHierarchy>
                               <TablixRowHierarchy>
@@ -540,22 +1226,28 @@ ORDER BY Apartment.CategoryID</CommandText>
                                     <KeepTogether>true</KeepTogether>
                                   </TablixMember>
                                   <TablixMember>
-                                    <Group Name="table1_Details_Group">
-                                      <DataElementName>Detail</DataElementName>
+                                    <Group Name="table1_ResidentID">
+                                      <GroupExpressions>
+                                        <GroupExpression>=Fields!ResidentID.Value</GroupExpression>
+                                      </GroupExpressions>
                                     </Group>
+                                    <SortExpressions>
+                                      <SortExpression>
+                                        <Value>=Fields!ResidentID.Value</Value>
+                                      </SortExpression>
+                                    </SortExpressions>
                                     <TablixMembers>
-                                      <TablixMember />
+                                      <TablixMember>
+                                        <KeepTogether>true</KeepTogether>
+                                      </TablixMember>
                                     </TablixMembers>
-                                    <DataElementName>Detail_Collection</DataElementName>
-                                    <DataElementOutput>Output</DataElementOutput>
-                                    <KeepTogether>true</KeepTogether>
                                   </TablixMember>
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>DataSet1</DataSetName>
                               <Top>0.5in</Top>
                               <Height>0.43in</Height>
-                              <Width>5.13889in</Width>
+                              <Width>11in</Width>
                               <ZIndex>1</ZIndex>
                               <Style>
                                 <FontFamily />
@@ -579,9 +1271,9 @@ ORDER BY Apartment.CategoryID</CommandText>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
-                  <Group Name="list1_Catagory">
+                  <Group Name="list1_Village_VillageID">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!Catagory.Value</GroupExpression>
+                      <GroupExpression>=Fields!Village_VillageID.Value</GroupExpression>
                     </GroupExpressions>
                     <PageBreak>
                       <BreakLocation>Between</BreakLocation>
@@ -589,7 +1281,7 @@ ORDER BY Apartment.CategoryID</CommandText>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
-                      <Value>=Fields!Catagory.Value</Value>
+                      <Value>=Fields!Village_VillageID.Value</Value>
                     </SortExpression>
                   </SortExpressions>
                   <DataElementOutput>Output</DataElementOutput>
@@ -601,9 +1293,9 @@ ORDER BY Apartment.CategoryID</CommandText>
             <PageBreak>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
-            <Top>1.29806in</Top>
-            <Height>2.78417in</Height>
-            <Width>5.90972in</Width>
+            <Top>1.28417in</Top>
+            <Height>2.82in</Height>
+            <Width>22in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <FontSize>14pt</FontSize>
@@ -613,7 +1305,7 @@ ORDER BY Apartment.CategoryID</CommandText>
             <Source>Embedded</Source>
             <Value>housingsystem</Value>
             <Sizing>FitProportional</Sizing>
-            <Left>1.9675in</Left>
+            <Left>5in</Left>
             <Height>0.85417in</Height>
             <Width>1.15278in</Width>
             <ZIndex>2</ZIndex>
@@ -624,17 +1316,17 @@ ORDER BY Apartment.CategoryID</CommandText>
             </Style>
           </Image>
         </ReportItems>
-        <Height>4.08223in</Height>
+        <Height>4.10417in</Height>
         <Style />
       </Body>
-      <Width>5.90972in</Width>
+      <Width>22in</Width>
       <Page>
         <PageFooter>
-          <Height>2.54cm</Height>
+          <Height>1in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Textbox Name="Textbox6">
+            <Textbox Name="Textbox31">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -664,10 +1356,11 @@ ORDER BY Apartment.CategoryID</CommandText>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox6</rd:DefaultName>
-              <Top>0.42in</Top>
+              <rd:DefaultName>Textbox31</rd:DefaultName>
+              <Top>0.33555in</Top>
+              <Left>4in</Left>
               <Height>0.25in</Height>
-              <Width>5.13889in</Width>
+              <Width>3in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -739,8 +1432,8 @@ zDvAbSgloWK1ZB1z2Yu8bM8AwCb29wrvCLehlISN1ZJ35bIiMmZ7BgCahVISMlZLrhSy7ZkzzUZz1yR+
 JQAAIAiUEgAAEARKCQAACAKlBIhH4R0AAKpEKQFisb+XeUcA0AiZd4C7UEoAAGiT/b3CO8JdKCUAACAIlBIAABAESgkQl7l3AACoCqUEAID2KLwD3IdSAgBAe2TeAe5DKQHi8oV3AACoCqUEAAAEgVICxCXzDgAgarl3gPtQSoC4FN4BAETtF94B7kMpAeKSewcAgKpQSoCY7O/l3hEARC3zDnAfSgkQn8I7AIBoFd4B7kMpAeKTeQcAEK3cO8B9KCVAfArvAAAiFfgWMKUEiM+X3gEARCnzDvAQSgkQn8I7AIAoFd4BHkIpAeKTeQcAEKXgn6mglADxybwDAIhS5h3gIZQSIDb7e4UCP0EPIEiZd4CHUEqAOGXeAQBEJQ/95o1EKQFiFfzeMICgzL0DrINSAsRp6h0AQFSi+EGGUgLEyJZhc+cUAOIx9Q6wDkoJEK8T7wAAojBdHpAPHqUEiNfYOwCAKLzxDrAuSgkQK/vJ59g5BYCwFdrfG3uHWBelBIjboSIYHQ3ATVTbvO95BwCwo8liIOm1dwwAwcm1v/fIO8QmWCkBYre/N5WtmADAdc+8A2yKUgI0wf7eK0kvvGMACMax9vfm3iE2xfYN0CSTRV/SqaSubxAAjsba34tulUSilADNM1l0JB1Iei6p4xkFQO2iLSQSpQRotsliKOmJpL4oKECTFZIOtb937JxjJ5QSoC0mi55sW6cn6Q+X/3pdv844AEpRyK79HscytfU+lBIAD7Mtod6Gv6tfcorbilRo+t4B0ApzSZmkL5a37xrj/wNBTN9zheVlCQAAAABJRU5ErkJggg==</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
-  <Language>en-US</Language>
+  <Language>en-IE</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>c7122c9e-1d20-413e-9119-5743c2a3fdb1</rd:ReportID>
+  <rd:ReportID>f6511557-a73c-4b5f-a3ba-e4ac0d07ccf4</rd:ReportID>
 </Report>
